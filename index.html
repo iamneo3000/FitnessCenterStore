@@ -99,7 +99,7 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
 .hero-fallback-inner{background:linear-gradient(135deg,#0a0a0a 0%,#1a1100 40%,#0a1500 70%,#1a0000 100%);padding:56px 20px 40px;position:relative}
 .hero-fallback-inner::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(circle,rgba(245,200,0,.12) 0%,rgba(239,68,68,.08) 40%,transparent 70%);pointer-events:none}
 .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,200,0,.1);border:1px solid rgba(245,200,0,.3);color:var(--yellow);padding:5px 16px;border-radius:6px;font-size:11px;font-weight:800;margin-bottom:14px;text-transform:uppercase;letter-spacing:.1em}
-.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,6vw,52px);font-weight:900;line-height:1;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.hero h1,.hero-content-overlay h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,6vw,52px);font-weight:900;line-height:1;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
 .hero h1 .g1{background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero h1 .g2{color:#fff}
 .hero p{color:var(--muted);font-size:13px;margin-bottom:18px}
@@ -325,6 +325,72 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--grad-main);color:#000;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:800;z-index:99999;opacity:0;transition:opacity .3s;pointer-events:none;font-family:'Barlow',sans-serif;white-space:nowrap;box-shadow:var(--shadow-yellow);text-transform:uppercase;letter-spacing:.05em}
 .toast.show{opacity:1}
 @media(max-width:480px){.products-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── HERO SLIDER ── */
+.hero-slider{position:relative;width:100%;height:280px;overflow:hidden;background:var(--bg)}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
+.hero-slide.active{opacity:1;pointer-events:auto}
+.hero-slide img{width:100%;height:100%;object-fit:cover;opacity:.55}
+.hero-slide .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,10,.1) 0%,rgba(10,10,10,.9) 100%)}
+.hero-dots{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:10}
+.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;border:1px solid rgba(255,255,255,.4)}
+.hero-dot.active{background:var(--yellow);border-color:var(--yellow);width:22px;border-radius:4px}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:10;transition:all .2s}
+.hero-arrow:hover{background:rgba(245,200,0,.3);border-color:var(--yellow)}
+.hero-arrow-l{left:12px}
+.hero-arrow-r{right:12px}
+.hero-content-overlay{position:absolute;bottom:0;left:0;right:0;padding:16px 20px 22px;z-index:5;pointer-events:none}
+.hero-content-overlay button{pointer-events:auto}
+
+/* ── DETAIL NAVEGACION PREV/NEXT ── */
+.detail-nav-row{display:flex;gap:9px;margin-bottom:12px}
+.detail-nav-btn{flex:1;background:var(--surface);border:1px solid var(--border2);color:var(--muted);padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-family:'Barlow',sans-serif;font-weight:700;text-align:center;transition:all .2s;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.detail-nav-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.detail-nav-btn .nav-arrow{font-size:14px;margin:0 3px}
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float{position:fixed;bottom:22px;left:18px;width:52px;height:52px;background:linear-gradient(135deg,#25d366,#128c7e);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9990;box-shadow:0 4px 18px rgba(37,211,102,.45);transition:transform .2s;text-decoration:none}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
+.wa-tooltip{position:absolute;left:60px;background:rgba(20,20,20,.95);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;white-space:nowrap;border:1px solid rgba(37,211,102,.3);opacity:0;pointer-events:none;transition:opacity .2s;font-family:'Barlow',sans-serif}
+.wa-float:hover .wa-tooltip{opacity:1}
+
+/* ── CONTACT SECTION ── */
+.contact-section{background:linear-gradient(160deg,#111,#0a0a0a);border-top:1px solid var(--border);padding:32px 18px 24px}
+.contact-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.contact-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:400px){.contact-cards{grid-template-columns:1fr}}
+.contact-card{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;text-decoration:none}
+.contact-card:hover{border-color:var(--yellow);background:rgba(245,200,0,.05);transform:translateY(-2px)}
+.contact-card-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.contact-card-icon.wa{background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(18,140,126,.15));border:1px solid rgba(37,211,102,.25)}
+.contact-card-icon.mail{background:linear-gradient(135deg,rgba(245,200,0,.12),rgba(249,115,22,.12));border:1px solid rgba(245,200,0,.25)}
+.contact-card-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:2px}
+.contact-card-val{font-size:13px;font-weight:700;color:#fff;word-break:break-all}
+
+/* ── FOOTER ── */
+.site-footer{background:#060606;border-top:1px solid var(--border);padding:20px 18px 14px;text-align:center;position:relative;overflow:hidden}
+.site-footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-main)}
+.footer-logo-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px}
+.footer-iwa{display:flex;align-items:center;gap:9px}
+.footer-iwa-logo{width:32px;height:32px;background:linear-gradient(135deg,#f97316,#b45309);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.footer-iwa-logo img{width:100%;height:100%;object-fit:cover}
+.footer-iwa-text{text-align:left}
+.footer-iwa-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#fff;line-height:1}
+.footer-iwa-sub{font-size:10px;color:var(--orange);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.footer-copy{font-size:11px;color:var(--muted);margin-bottom:4px}
+.footer-dev{font-size:11px;color:var(--muted)}
+.footer-dev a{color:var(--yellow);font-weight:700;text-decoration:none}
+.footer-dev a:hover{text-decoration:underline}
+
+/* ── HERO SLIDER CONFIG ADMIN ── */
+.hero-slides-admin{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.hsa-row{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.hsa-num{width:22px;height:22px;background:var(--grad-main);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#000;flex-shrink:0}
+.hsa-img{width:50px;height:36px;object-fit:cover;border-radius:5px;flex-shrink:0;background:var(--card)}
+.hsa-url{font-size:11px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hsa-del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--red);padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -385,6 +451,29 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
     <div class="section-title" id="section-label">🏆 Todos los productos</div>
     <div class="products-grid" id="products-grid"></div>
   </div>
+  <!-- CONTACTO -->
+  <div class="contact-section" id="contact-section">
+    <div class="contact-title">Contáctanos</div>
+    <div class="contact-sub">Estamos aquí para ayudarte</div>
+    <div class="contact-cards" id="contact-cards-render"></div>
+  </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-logo-wrap">
+      <div class="footer-iwa" onclick="window.open('https://infinitewebarchitecture.com','_blank')" style="cursor:pointer">
+        <div class="footer-iwa-logo" id="iwa-logo-box">
+          <img id="iwa-logo-img" src="" alt="IWA" style="display:none">
+          <span id="iwa-logo-fallback" style="font-size:18px">🌐</span>
+        </div>
+        <div class="footer-iwa-text">
+          <div class="footer-iwa-name">Infinite Web Architecture</div>
+          <div class="footer-iwa-sub">Diseño &amp; Desarrollo Web</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copy">© 2025 Fitness Center Store. Todos los derechos reservados.</div>
+    <div class="footer-dev">Desarrollado por <a href="https://infinitewebarchitecture.com" target="_blank">Infinite Web Architecture</a></div>
+  </footer>
   <div class="admin-trigger" onclick="toggleLoginPopup()"></div>
 </div>
 
@@ -462,7 +551,7 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
   <div class="success-icon">🏆</div>
   <div class="success-title">¡Pedido confirmado!</div>
   <div class="success-sub" id="success-sub">Tu pedido fue registrado correctamente.</div>
-  <div class="order-num" id="order-num">#ADDA-0000</div>
+  <div class="order-num" id="order-num">#FCS-0000</div>
   <button class="continue-btn" onclick="showScreen('screen-store');clearCart()">Seguir comprando</button>
 </div>
 
@@ -488,16 +577,29 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
     </div>
     <div id="admin-tab-config" style="display:none">
       <div class="cfg-sec">
-        <h3>🖼️ Imagen del banner principal</h3>
-        <div class="cfg-fg">
-          <label>Foto de fondo del hero</label>
-          <div class="hero-upload-area" id="hero-upload-area">
-            <input type="file" accept="image/*" id="hero-file-input" onchange="handleHeroUpload(this)">
-            <img id="hero-preview" alt="banner">
-            <div class="upload-ph" id="hero-upload-ph"><span style="font-size:28px">🖼️</span><span>Toca para subir imagen</span></div>
+        <h3>🖼️ Imágenes del slider (hasta 3)</h3>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Sube 1, 2 o 3 imágenes que rotarán automáticamente en el banner.</p>
+        <div class="hero-slides-admin" id="hero-slides-list"></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:700">Slide 1</div>
+            <label style="display:block;background:var(--surface);border:1px dashed var(--border2);border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-size:11px;color:var(--muted);transition:border-color .2s" onmouseover="this.style.borderColor='var(--yellow)'" onmouseout="this.style.borderColor='var(--border2)'">
+              📷 Subir<input type="file" accept="image/*" style="display:none" onchange="handleHeroSlideUpload(this,0)">
+            </label>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:700">Slide 2</div>
+            <label style="display:block;background:var(--surface);border:1px dashed var(--border2);border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-size:11px;color:var(--muted);transition:border-color .2s" onmouseover="this.style.borderColor='var(--yellow)'" onmouseout="this.style.borderColor='var(--border2)'">
+              📷 Subir<input type="file" accept="image/*" style="display:none" onchange="handleHeroSlideUpload(this,1)">
+            </label>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:700">Slide 3</div>
+            <label style="display:block;background:var(--surface);border:1px dashed var(--border2);border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-size:11px;color:var(--muted);transition:border-color .2s" onmouseover="this.style.borderColor='var(--yellow)'" onmouseout="this.style.borderColor='var(--border2)'">
+              📷 Subir<input type="file" accept="image/*" style="display:none" onchange="handleHeroSlideUpload(this,2)">
+            </label>
           </div>
         </div>
-        <button class="save-cfg-btn" onclick="saveHero()">Guardar imagen</button>
       </div>
       <div class="cfg-sec">
         <h3>🚚 Tarifas de envío</h3>
@@ -514,7 +616,8 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
         <div class="cfg-fg"><label>N° de cuenta / Celular</label><input type="text" id="cfg-account"></div>
         <div class="cfg-fg"><label>Tipo de cuenta</label><input type="text" id="cfg-account-type"></div>
         <div class="cfg-fg"><label>Cédula / RUC</label><input type="text" id="cfg-id"></div>
-        <div class="cfg-fg"><label>WhatsApp para pedidos</label><input type="text" id="cfg-whatsapp"></div>
+        <div class="cfg-fg"><label>WhatsApp para pedidos</label><input type="text" id="cfg-whatsapp" placeholder="+593 999 999 999"></div>
+        <div class="cfg-fg"><label>Email de contacto</label><input type="text" id="cfg-contact-email" placeholder="contacto@tuemail.com"></div>
         <div class="cfg-fg"><label>Instrucciones adicionales</label><textarea id="cfg-notes"></textarea></div>
         <button class="save-cfg-btn" onclick="saveConfig()">Guardar datos de pago</button>
       </div>
@@ -594,6 +697,10 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
   </div>
 </div>
 
+<a class="wa-float" id="wa-float-btn" href="#" target="_blank" onclick="openWaFloat(event)">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.124 1.522 5.855L.057 23.882l6.198-1.426A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.648-.518-5.157-1.416l-.369-.218-3.677.845.873-3.575-.24-.38A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  <span class="wa-tooltip">Escríbenos por WhatsApp</span>
+</a>
 <div class="toast" id="toast"></div>
 </div>
 
@@ -618,7 +725,7 @@ function makeQR(el,text){
   function buildWithLib(){
     el.innerHTML='';
     try{
-      new QRCode(el,{text:text||'Adda',width:200,height:200,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});
+      new QRCode(el,{text:text||'FCS',width:200,height:200,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});
       // forzar que el canvas/img llene el contenedor
       setTimeout(function(){
         var img=el.querySelector('img');var cv=el.querySelector('canvas');
@@ -747,7 +854,9 @@ function gsGuardarConfig(){
     {clave:'hero_img',        valor:heroImg||''},
     {clave:'admin_pass',      valor:OWNER_PASS},
     {clave:'orderCount',      valor:String(orderCount)},
-    {clave:'revenue',         valor:String(totalRevenue)}
+    {clave:'revenue',         valor:String(totalRevenue)},
+    {clave:'hero_imgs',       valor:JSON.stringify(heroImgs)},
+    {clave:'contact_email',   valor:sellerConfig.contact_email||''}
   ];
   fetch(SUPA_URL+'/rest/v1/config',{method:'POST',headers:SUPA_UPSERT,body:JSON.stringify(pairs)})
   .catch(function(err){console.warn('[FCS] Config batch error:',err);});
@@ -758,7 +867,7 @@ function gsLoadAll(done){
   showLoadingOverlay(true);
 
   // Defaults locales mientras carga
-  sellerConfig=lload('seller',{name:'Fitness Center Store',bank:'Banco Pichincha',account:'',accountType:'Cuenta de ahorros',idNum:'',whatsapp:'',notes:''});
+  sellerConfig=lload('seller',{name:'Fitness Center Store',bank:'Banco Pichincha',account:'',accountType:'Cuenta de ahorros',idNum:'',whatsapp:'',notes:'',contact_email:''});
   shippingConfig=lload('shipping',{city:3,outside:8});
   heroImg=lload('hero','');
   orderCount=lload('orderCount',0);
@@ -810,13 +919,14 @@ function gsLoadAll(done){
         accountType:map['seller_accountType']||'Cuenta de ahorros',
         idNum:map['seller_idNum']||'',
         whatsapp:map['seller_whatsapp']||'',
-        notes:map['seller_notes']||''
+        notes:map['seller_notes']||'',contact_email:map['contact_email']||''
       };
       shippingConfig={
         city:parseFloat(map['shipping_city'])||3,
         outside:parseFloat(map['shipping_outside'])||8
       };
       heroImg=map['hero_img']||'';
+      if(map['hero_imgs']){try{var hi=JSON.parse(map['hero_imgs']);if(Array.isArray(hi)){heroImgs=hi;lsave('heroImgs',heroImgs);}}catch(e){}}
       if(map['admin_pass'])OWNER_PASS=map['admin_pass'];
       orderCount=parseInt(map['orderCount'])||0;
       totalRevenue=parseFloat(map['revenue'])||0;
@@ -871,7 +981,7 @@ var OWNER_USER='admin';
 var OWNER_PASS=lload('pass','adda2024'); // se sobreescribe con el valor del Sheet en gsLoadAll
 
 // Valores provisionales (se sobreescriben en gsLoadAll)
-var sellerConfig={name:'Fitness Center Store',bank:'Banco Pichincha',account:'',accountType:'Cuenta de ahorros',idNum:'',whatsapp:'',notes:''};
+var sellerConfig={name:'Fitness Center Store',bank:'Banco Pichincha',account:'',accountType:'Cuenta de ahorros',idNum:'',whatsapp:'',notes:'',contact_email:''};
 var shippingConfig={city:3,outside:8};
 var heroImg='';
 
@@ -885,6 +995,10 @@ var products=lload('products',productosDefault);
 var cart=[];var editingId=null;var currentFilter='all';var selectedPay='cash';
 var orderCount=lload('orderCount',0);var totalRevenue=lload('revenue',0);
 var currentImg='';var currentHeroImg='';var specCount=0;
+var heroImgs=lload('heroImgs',['','','']); // hasta 3 slides
+var currentHeroImgIdx=0; // cuál slot estamos editando en admin
+var heroSliderInterval=null;
+var heroSliderCurrent=0;
 var pendingWaUrl='';
 
 // ===== FLOWER SVG =====
@@ -897,7 +1011,7 @@ function showScreen(id){
   updateCarts();
   if(id==='screen-cart')renderCart();
   if(id==='screen-admin'){renderAdmin();loadConfigForm();}
-  if(id==='screen-store'){renderHero();filterProducts(currentFilter,null);}
+  if(id==='screen-store'){renderHero();filterProducts(currentFilter,null);renderContact();}
   window.scrollTo(0,0);
   closeLoginPopup();
 }
@@ -959,6 +1073,8 @@ function saveConfig(){
   sellerConfig.idNum=document.getElementById('cfg-id').value||sellerConfig.idNum;
   sellerConfig.whatsapp=document.getElementById('cfg-whatsapp').value||sellerConfig.whatsapp;
   sellerConfig.notes=document.getElementById('cfg-notes').value||sellerConfig.notes;
+  var emailEl=document.getElementById('cfg-contact-email');
+  if(emailEl)sellerConfig.contact_email=emailEl.value||sellerConfig.contact_email||'';
   lsave('seller',sellerConfig);
   gsGuardarConfig();
   showToast('Datos de pago guardados ✓');
@@ -1013,9 +1129,9 @@ function loadConfigForm(){
   document.getElementById('cfg-notes').value=sellerConfig.notes;
   document.getElementById('cfg-ship-city').value=shippingConfig.city;
   document.getElementById('cfg-ship-outside').value=shippingConfig.outside;
-  var hp=document.getElementById('hero-preview');
-  if(heroImg){hp.src=heroImg;hp.style.display='block';document.getElementById('hero-upload-ph').style.display='none';}
-  else{hp.style.display='none';document.getElementById('hero-upload-ph').style.display='flex';}
+  var emailEl=document.getElementById('cfg-contact-email');
+  if(emailEl)emailEl.value=sellerConfig.contact_email||'';
+  renderHeroSlidesAdmin();
 }
 function adminTab(tab,btn){
   document.querySelectorAll('.admin-tab').forEach(function(b){b.classList.remove('active');});
@@ -1028,11 +1144,34 @@ function adminTab(tab,btn){
 // ===== HERO =====
 function renderHero(){
   var h=document.getElementById('store-hero');
-  if(heroImg){
-    h.innerHTML='<div class="hero-img-wrap"><img src="'+heroImg+'" alt="FCS"><div class="hero-overlay"></div></div><div class="hero-content"><div class="hero-tag">⚡ Envío a tu puerta</div><h1><span class="g1">Rendimiento Máximo</span><br><span class="g2">al mejor precio</span></h1><p>Pesas · Cardio · Suplementos · Ropa deportiva</p><button class="hero-cta" onclick="document.querySelector(\'.products-section\').scrollIntoView({behavior:\'smooth\'})">Ver productos →</button></div>';
+  // Sincronizar heroImgs con heroImg legacy
+  var imgs=heroImgs.filter(function(u){return u&&u.length>4;});
+  if(heroImg&&imgs.length===0)imgs=[heroImg];
+  if(heroSliderInterval){clearInterval(heroSliderInterval);heroSliderInterval=null;}
+  if(imgs.length>0){
+    var slides=imgs.map(function(url,i){
+      return'<div class="hero-slide'+(i===0?' active':'')+'"><img src="'+url+'" alt="FCS slide '+(i+1)+'"><div class="hero-overlay"></div></div>';
+    }).join('');
+    var dots=imgs.length>1?'<div class="hero-dots">'+imgs.map(function(_,i){return'<div class="hero-dot'+(i===0?' active':'')+'" onclick="heroGoTo('+i+')"></div>';}).join('')+'</div>':'';
+    var arrows=imgs.length>1?'<button class="hero-arrow hero-arrow-l" onclick="heroGoTo(-1,true)">&#8249;</button><button class="hero-arrow hero-arrow-r" onclick="heroGoTo(1,true)">&#8250;</button>':'';
+    h.innerHTML='<div class="hero-slider" id="hero-slider">'+slides+dots+arrows+'</div>'
+      +'<div class="hero-content-overlay"><div class="hero-tag">⚡ Envío a tu puerta</div><h1 style="font-family:Barlow Condensed,sans-serif;font-size:clamp(26px,5vw,48px);font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px"><span style="background:linear-gradient(135deg,#f5c800,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Rendimiento Máximo</span><br><span style="color:#fff">al mejor precio</span></h1><p style="color:rgba(255,255,255,.65);font-size:13px;margin-bottom:16px">Pesas · Cardio · Suplementos · Ropa deportiva</p><button class="hero-cta" onclick="document.querySelector(\'.products-section\').scrollIntoView({behavior:\'smooth\'})">Ver productos →</button></div>';
+    heroSliderCurrent=0;
+    if(imgs.length>1){heroSliderInterval=setInterval(function(){heroGoTo(1,true);},4500);}
   } else {
     h.innerHTML='<div class="hero-fallback-inner"><div class="hero-tag">⚡ Envío a tu puerta</div><h1><span class="g1">Rendimiento Máximo</span><br><span class="g2">al mejor precio</span></h1><p>Pesas · Cardio · Suplementos · Ropa deportiva</p><button class="hero-cta" onclick="document.querySelector(\'.products-section\').scrollIntoView({behavior:\'smooth\'})">Ver productos →</button></div>';
   }
+}
+function heroGoTo(idx,relative){
+  var imgs=heroImgs.filter(function(u){return u&&u.length>4;});
+  if(heroImg&&imgs.length===0)imgs=[heroImg];
+  var n=imgs.length;if(n<2)return;
+  if(relative){heroSliderCurrent=(heroSliderCurrent+idx+n)%n;}
+  else{heroSliderCurrent=((idx%n)+n)%n;}
+  var slider=document.getElementById('hero-slider');if(!slider)return;
+  slider.querySelectorAll('.hero-slide').forEach(function(s,i){s.classList.toggle('active',i===heroSliderCurrent);});
+  slider.querySelectorAll('.hero-dot').forEach(function(d,i){d.classList.toggle('active',i===heroSliderCurrent);});
+  if(heroSliderInterval){clearInterval(heroSliderInterval);heroSliderInterval=setInterval(function(){heroGoTo(1,true);},4500);}
 }
 
 // ===== SHIPPING =====
@@ -1106,6 +1245,17 @@ function openDetail(id){
   col2+='</div></div>';
   col2+='<button class="add-cart-btn" onclick="addToCartQ('+id+',\''+qid+'\');showScreen(\'screen-cart\')">&#x1F6D2; Agregar al carrito</button>';
   col2+='<button class="detail-back-btn" onclick="showScreen(\'screen-store\')">&#x2190; Seguir comprando</button>';
+  // Prev / Next navigation
+  var allIds=products.map(function(x){return x.id;});
+  var curIdx=allIds.indexOf(id);
+  var prevId=curIdx>0?allIds[curIdx-1]:null;
+  var nextId=curIdx<allIds.length-1?allIds[curIdx+1]:null;
+  var prevName=prevId?products[curIdx-1].name:'';
+  var nextName=nextId?products[curIdx+1].name:'';
+  col2='<div class="detail-nav-row">'
+    +(prevId?'<button class="detail-nav-btn" onclick="openDetail('+prevId+')"><span class="nav-arrow">&#8249;</span> '+prevName.substring(0,18)+(prevName.length>18?'…':'')+'</button>':'<span></span>')
+    +(nextId?'<button class="detail-nav-btn" style="text-align:right" onclick="openDetail('+nextId+')">'+nextName.substring(0,18)+(nextName.length>18?'…':'')+'<span class="nav-arrow"> &#8250;</span></button>':'<span></span>')
+  +'</div>'+col2;
   document.getElementById('detail-body').innerHTML='<div class="detail-layout"><div class="detail-img-col"><div class="detail-img-frame">'+bHTML+imgH+'</div></div><div class="detail-info-col">'+col2+'</div></div>';
   showScreen('screen-detail');
 }
@@ -1170,7 +1320,7 @@ function openQRModal(total,zone,sub,ship){
   var addr=document.getElementById('c-addr').value;
   var items=cart.map(function(i){return i.name+' x'+i.qty;}).join(', ');
 
-  var qrText='ADDA - TRANSFERENCIA BANCARIA\n'
+  var qrText='FITNESS CENTER STORE - TRANSFERENCIA\n'
     +'Vendedor: '+sellerConfig.name+'\n'
     +'Banco: '+sellerConfig.bank+'\n'
     +'Cuenta: '+sellerConfig.account+'\n'
@@ -1295,7 +1445,7 @@ function handleImgUpload(input){
   reader.onload=function(e){prev.src=e.target.result;prev.style.display='block';ph.style.display='none';};
   reader.readAsDataURL(file);
   // Subir a imgbb
-  ph.innerHTML='<span style="font-size:13px;color:var(--lilac)">Subiendo imagen...</span>';
+  ph.innerHTML='<span style="font-size:13px;color:var(--yellow)">Subiendo imagen...</span>';
   imgbbUpload(file,function(url){
     currentImg=url;
     prev.src=url;
@@ -1316,9 +1466,9 @@ function resetModal(){
   document.getElementById('upload-ph2').style.display='flex';
   document.getElementById('img-file-input').value='';
   ['p-name','p-price','p-old-price','p-desc','p-stock','p-brand'].forEach(function(id){document.getElementById(id).value='';});
-  document.getElementById('p-cat').value='proyectores';
+  document.getElementById('p-cat').value='pesas';
   document.getElementById('p-badge').value='';
-  document.getElementById('p-emoji').value='📽️';
+  document.getElementById('p-emoji').value='🏋️';
   document.getElementById('specs-editor').innerHTML='';specCount=0;
 }
 function openAddModal(){editingId=null;resetModal();addSpecRow('','');document.getElementById('modal-title').textContent='Agregar producto';document.getElementById('product-modal').classList.add('open');}
@@ -1372,11 +1522,89 @@ function deleteProduct(id){
   gsSaveProducts(function(ok){ showToast(ok ? 'Eliminado ✓' : 'Eliminado (sin conexión)'); });
 }
 
+// ===== CONTACT =====
+function renderContact(){
+  var el=document.getElementById('contact-cards-render');
+  if(!el)return;
+  var waNum=sellerConfig.whatsapp.replace(/[^0-9]/g,'');
+  var waUrl=waNum?'https://wa.me/'+waNum:'#';
+  var mailVal=sellerConfig.email||sellerConfig.notes||'';
+  // detect email in notes
+  var emailMatch=(sellerConfig.notes||'').match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/);
+  var emailAddr=sellerConfig.contact_email||(emailMatch?emailMatch[0]:'');
+  el.innerHTML=
+    '<a class="contact-card" href="'+waUrl+'" target="_blank">'
+    +'<div class="contact-card-icon wa">💬</div>'
+    +'<div><div class="contact-card-label">WhatsApp</div>'
+    +'<div class="contact-card-val">'+(sellerConfig.whatsapp||'No configurado')+'</div></div></a>'
+    +(emailAddr
+      ?'<a class="contact-card" href="mailto:'+emailAddr+'">'
+       +'<div class="contact-card-icon mail">✉️</div>'
+       +'<div><div class="contact-card-label">Email</div>'
+       +'<div class="contact-card-val">'+emailAddr+'</div></div></a>'
+      :'<div class="contact-card" style="cursor:default">'
+       +'<div class="contact-card-icon mail">✉️</div>'
+       +'<div><div class="contact-card-label">Email</div>'
+       +'<div class="contact-card-val" style="color:var(--muted)">No configurado</div></div></div>');
+  // Update WA float
+  var waBtn=document.getElementById('wa-float-btn');
+  if(waBtn)waBtn.href=waUrl;
+}
+function openWaFloat(e){
+  var waNum=sellerConfig.whatsapp.replace(/[^0-9]/g,'');
+  if(!waNum){e.preventDefault();showToast('WhatsApp no configurado');return;}
+  document.getElementById('wa-float-btn').href='https://wa.me/'+waNum;
+}
+
+// ===== HERO SLIDER ADMIN =====
+function renderHeroSlidesAdmin(){
+  var container=document.getElementById('hero-slides-list');
+  if(!container)return;
+  var imgs=heroImgs;
+  container.innerHTML=imgs.map(function(url,i){
+    return'<div class="hsa-row">'
+      +'<div class="hsa-num">'+(i+1)+'</div>'
+      +(url?'<img class="hsa-img" src="'+url+'" alt="">':'<div class="hsa-img" style="border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted)">vacío</div>')
+      +'<span class="hsa-url">'+(url?url.substring(0,40)+'…':'Sin imagen')+'</span>'
+      +(url?'<button class="hsa-del" onclick="removeHeroSlide('+i+')">✕</button>':'')
+    +'</div>';
+  }).join('');
+}
+function removeHeroSlide(idx){
+  heroImgs[idx]='';lsave('heroImgs',heroImgs);
+  gsSetConfig('hero_imgs',JSON.stringify(heroImgs));
+  renderHeroSlidesAdmin();renderHero();showToast('Imagen '+(idx+1)+' eliminada');
+}
+function handleHeroSlideUpload(input,idx){
+  if(!input.files||!input.files[0])return;
+  showToast('Subiendo imagen '+(idx+1)+'...');
+  imgbbUpload(input.files[0],function(url){
+    heroImgs[idx]=url;lsave('heroImgs',heroImgs);
+    gsSetConfig('hero_imgs',JSON.stringify(heroImgs));
+    renderHeroSlidesAdmin();renderHero();
+    showToast('Imagen '+(idx+1)+' guardada ✓');
+  },function(err){showToast('Error al subir imagen');});
+}
+
+// ===== CONFIG — load email from map =====
+var _origLoadConfigForm=loadConfigForm;
+
 // ===== INIT =====
 gsLoadAll(function(){
+  // Load hero slides from config
+  // heroImgs is already loaded from lload; also check if Supabase has hero_imgs
   renderHero();
   filterProducts('all',null);
   updateShippingDisplay();
+  renderContact();
+  // Load IWA logo
+  var iwaImg=document.getElementById('iwa-logo-img');
+  var iwaFb=document.getElementById('iwa-logo-fallback');
+  if(iwaImg){
+    iwaImg.src='Gemini_Generated_Image_6jv8t96jv8t96jv8-_1_.webp';
+    iwaImg.onload=function(){iwaImg.style.display='block';if(iwaFb)iwaFb.style.display='none';};
+    iwaImg.onerror=function(){iwaImg.style.display='none';if(iwaFb)iwaFb.style.display='inline';};
+  }
 });
 </script>
 </body>
