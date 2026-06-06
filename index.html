@@ -370,15 +370,40 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
 .contact-card-val{font-size:13px;font-weight:700;color:#fff;word-break:break-all}
 
 /* ── FOOTER ── */
-.site-footer{background:#060606;border-top:1px solid var(--border);padding:20px 18px 14px;text-align:center;position:relative;overflow:hidden}
+/* ── GOOGLE FONT: Cinzel para IWA serif dorado ── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&display=swap');
+
+.site-footer{background:#060606;border-top:1px solid var(--border);padding:28px 18px 18px;text-align:center;position:relative;overflow:hidden}
 .site-footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-main)}
-.footer-logo-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px}
-.footer-iwa{display:flex;align-items:center;gap:9px}
-.footer-iwa-logo{width:32px;height:32px;background:linear-gradient(135deg,#f97316,#b45309);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-.footer-iwa-logo img{width:100%;height:100%;object-fit:cover}
-.footer-iwa-text{text-align:left}
-.footer-iwa-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#fff;line-height:1}
-.footer-iwa-sub{font-size:10px;color:var(--orange);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.footer-iwa-link{transition:transform .2s}
+.footer-iwa-link:hover{transform:translateY(-2px)}
+.footer-iwa-name{
+  font-family:'Cinzel',Georgia,serif;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  line-height:1;
+  background:linear-gradient(135deg,#f5c800 0%,#ffd700 30%,#f97316 60%,#f5c800 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 1px 3px rgba(245,200,0,.4))
+}
+.footer-iwa-sub2{
+  font-family:'Cinzel',Georgia,serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  background:linear-gradient(135deg,#f5c800,#f97316);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-top:2px
+}
+.footer-dev-label{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.footer-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:14px auto 10px}
 .footer-copy{font-size:11px;color:var(--muted);margin-bottom:4px}
 .footer-dev{font-size:11px;color:var(--muted)}
 .footer-dev a{color:var(--yellow);font-weight:700;text-decoration:none}
@@ -459,20 +484,20 @@ nav{background:rgba(10,10,10,.95);backdrop-filter:blur(14px);border-bottom:1px s
   </div>
   <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="footer-logo-wrap">
-      <div class="footer-iwa" onclick="window.open('https://infinitewebarchitecture.com','_blank')" style="cursor:pointer">
-        <div class="footer-iwa-logo" id="iwa-logo-box">
-          <img id="iwa-logo-img" src="" alt="IWA" style="display:none">
-          <span id="iwa-logo-fallback" style="font-size:18px">🌐</span>
-        </div>
-        <div class="footer-iwa-text">
-          <div class="footer-iwa-name">Infinite Web Architecture</div>
-          <div class="footer-iwa-sub">Diseño &amp; Desarrollo Web</div>
+    <div class="footer-iwa-link" onclick="window.open('https://infinitewebarchitecture.github.io/InfiniteWebArchitecture.wp/','_blank')" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none">
+      <img id="iwa-logo-img" src="" alt="Infinite Web Architecture" style="height:56px;width:auto;display:none;filter:drop-shadow(0 2px 8px rgba(245,180,0,.35))">
+      <div id="iwa-logo-fallback" style="display:flex;align-items:center;gap:10px">
+        <div style="width:52px;height:52px;background:linear-gradient(135deg,#f97316,#f5c800);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 14px rgba(245,180,0,.3)">🌐</div>
+        <div style="text-align:left">
+          <div class="footer-iwa-name">INFINITE</div>
+          <div class="footer-iwa-sub2">WEB ARCHITECTURE</div>
         </div>
       </div>
+      <div class="footer-dev-label">Diseño &amp; Desarrollo Web</div>
     </div>
+    <div class="footer-divider"></div>
     <div class="footer-copy">© 2025 Fitness Center Store. Todos los derechos reservados.</div>
-    <div class="footer-dev">Desarrollado por <a href="https://infinitewebarchitecture.com" target="_blank">Infinite Web Architecture</a></div>
+    <div class="footer-dev">Desarrollado por <a href="https://infinitewebarchitecture.github.io/InfiniteWebArchitecture.wp/" target="_blank">Infinite Web Architecture</a></div>
   </footer>
   <div class="admin-trigger" onclick="toggleLoginPopup()"></div>
 </div>
@@ -1597,14 +1622,16 @@ gsLoadAll(function(){
   filterProducts('all',null);
   updateShippingDisplay();
   renderContact();
-  // Load IWA logo
-  var iwaImg=document.getElementById('iwa-logo-img');
-  var iwaFb=document.getElementById('iwa-logo-fallback');
-  if(iwaImg){
-    iwaImg.src='Gemini_Generated_Image_6jv8t96jv8t96jv8-_1_.webp';
-    iwaImg.onload=function(){iwaImg.style.display='block';if(iwaFb)iwaFb.style.display='none';};
-    iwaImg.onerror=function(){iwaImg.style.display='none';if(iwaFb)iwaFb.style.display='inline';};
-  }
+  // Load IWA logo — base64 embedded below
+  (function(){
+    var img=document.getElementById('iwa-logo-img');
+    var fb=document.getElementById('iwa-logo-fallback');
+    if(!img)return;
+    // Try loading from same folder first, fallback to inline text logo
+    img.onload=function(){img.style.display='block';if(fb)fb.style.display='none';};
+    img.onerror=function(){img.style.display='none';if(fb)fb.style.display='flex';};
+    img.src='iwa-logo.webp';
+  })();
 });
 </script>
 </body>
