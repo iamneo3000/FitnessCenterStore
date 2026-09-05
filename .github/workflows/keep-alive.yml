@@ -1,0 +1,70 @@
+name: 🏋️ Fitness Center Store — Keep Alive
+
+# Ejecuta cada 3 días a las 8:00 AM UTC
+# También se puede lanzar manualmente desde GitHub
+on:
+  schedule:
+    - cron: '0 8 */3 * *'   # cada 3 días
+  workflow_dispatch:          # botón manual en GitHub
+
+jobs:
+  ping-supabase:
+    name: Ping Supabase para evitar pausa
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: 📡 Ping tabla config (lectura simple)
+        run: |
+          echo "🏋️ Haciendo ping a Supabase — $(date)"
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/config?select=clave&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+
+          echo "HTTP Status: $RESPONSE"
+
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Supabase activo y respondiendo correctamente"
+          else
+            echo "⚠️ Respuesta inesperada: $RESPONSE"
+            exit 1
+          fi
+
+      - name: 📡 Ping tabla productos (segunda verificación)
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/productos?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+
+          echo "Productos ping status: $RESPONSE"
+
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Tabla productos accesible"
+          else
+            echo "⚠️ Productos no accesible: $RESPONSE"
+          fi
+
+      - name: 🌐 Ping sitio GitHub Pages
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://iamneo3000.github.io/FitnessCenterStore/")
+
+          echo "GitHub Pages status: $RESPONSE"
+
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Sitio web activo"
+          else
+            echo "⚠️ Sitio respondió: $RESPONSE"
+          fi
+
+      - name: 📊 Resumen
+        run: |
+          echo ""
+          echo "================================================"
+          echo "  🏋️ FITNESS CENTER STORE — KEEP ALIVE REPORT"
+          echo "  Fecha: $(date '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "  Próximo ping: en 3 días"
+          echo "================================================"
