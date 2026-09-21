@@ -2,66 +2,67 @@ name: 🏋️ Fitness Center Store — Keep Alive
 
 on:
   schedule:
-    - cron: '0 8 */2 * *'   # cada 2 días — margen amplio vs 7 días de Supabase
+    - cron: '0 */12 * * *'
   workflow_dispatch:
 
 jobs:
   ping-supabase:
-    name: Mantener Supabase activo
+    name: Ping Supabase para evitar pausa
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
+    continue-on-error: true
 
     steps:
-      - name: 🔍 Query real a Postgres via REST
+      - name: 📡 Ping Supabase — tabla config
         run: |
-          echo "📅 $(date '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "🏋️ Haciendo ping a Supabase — $(date)"
 
-          # Query que fuerza actividad real en Postgres
-          HTTP=$(curl -s -o /tmp/r1.txt -w "%{http_code}" \
-            --max-time 30 --retry 3 --retry-delay 10 \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/config?select=clave,valor&limit=5" \
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/config?select=clave&limit=1" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Accept: application/json" \
-            -H "Prefer: count=exact" \
-            || echo "000")
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
 
-          echo "→ HTTP Status: $HTTP"
-          cat /tmp/r1.txt
-          echo ""
+          echo "HTTP Status: $RESPONSE"
 
-      - name: 🔍 Query real a tabla productos
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Supabase activo y respondiendo correctamente"
+          else
+            echo "⚠️ Respuesta inesperada: $RESPONSE"
+          fi
+
+      - name: 📡 Ping Supabase — tabla productos
         run: |
-          HTTP=$(curl -s -o /tmp/r2.txt -w "%{http_code}" \
-            --max-time 30 --retry 3 --retry-delay 10 \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/productos?select=id,name&limit=5" \
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/productos?select=id&limit=1" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Accept: application/json" \
-            -H "Prefer: count=exact" \
-            || echo "000")
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
 
-          echo "→ HTTP Status productos: $HTTP"
-          cat /tmp/r2.txt
-          echo ""
+          echo "Productos ping status: $RESPONSE"
 
-      - name: ⚡ Ping via Edge Function (activa el motor completamente)
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Tabla productos accesible"
+          else
+            echo "⚠️ Productos no accesible: $RESPONSE"
+          fi
+
+      - name: 🌐 Ping sitio GitHub Pages
         run: |
-          # Llamada al health endpoint de Supabase — activa la DB a nivel motor
-          HTTP=$(curl -s -o /tmp/r3.txt -w "%{http_code}" \
-            --max-time 20 \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            || echo "000")
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://iamneo3000.github.io/FitnessCenterStore/")
 
-          echo "→ Health endpoint: $HTTP"
+          echo "GitHub Pages status: $RESPONSE"
 
-      - name: 📊 Resultado
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Sitio web activo"
+          else
+            echo "⚠️ Sitio respondió: $RESPONSE"
+          fi
+
+      - name: 📊 Resumen
         run: |
           echo ""
-          echo "============================================"
-          echo "  ✅ Keep-alive completado — $(date '+%Y-%m-%d')"
-          echo "  🗓  Próxima ejecución: en 2 días"
-          echo "  🔗 Supabase: xnlumxmzmcfpamjfsyec"
-          echo "============================================"
+          echo "================================================"
+          echo "  🏋️ FITNESS CENTER STORE — KEEP ALIVE REPORT"
+          echo "  Fecha: $(date '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "  Próximo ping: en 2 días"
+          echo "================================================"
