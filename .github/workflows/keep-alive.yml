@@ -2,89 +2,66 @@ name: 🏋️ Fitness Center Store — Keep Alive
 
 on:
   schedule:
-    - cron: '0 8 */3 * *'   # cada 3 días a las 8:00 AM UTC
-  workflow_dispatch:          # botón manual en GitHub
+    - cron: '0 8 */2 * *'   # cada 2 días — margen amplio vs 7 días de Supabase
+  workflow_dispatch:
 
 jobs:
   ping-supabase:
-    name: Ping Supabase para evitar pausa
+    name: Mantener Supabase activo
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    # NO falla el workflow aunque Supabase responda mal
-    continue-on-error: true
 
     steps:
-      - name: 📡 Ping Supabase — tabla config
-        id: ping_config
+      - name: 🔍 Query real a Postgres via REST
         run: |
-          echo "🏋️ Haciendo ping a Supabase — $(date)"
+          echo "📅 $(date '+%Y-%m-%d %H:%M:%S UTC')"
 
-          HTTP=$(curl -s -o /tmp/resp_config.txt -w "%{http_code}" \
-            --max-time 30 \
-            --retry 3 \
-            --retry-delay 5 \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/config?select=clave&limit=1" \
+          # Query que fuerza actividad real en Postgres
+          HTTP=$(curl -s -o /tmp/r1.txt -w "%{http_code}" \
+            --max-time 30 --retry 3 --retry-delay 10 \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/config?select=clave,valor&limit=5" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Accept: application/json" || echo "000")
+            -H "Accept: application/json" \
+            -H "Prefer: count=exact" \
+            || echo "000")
 
-          echo "HTTP Status config: $HTTP"
-          echo "Respuesta: $(cat /tmp/resp_config.txt)"
-          echo "status=$HTTP" >> $GITHUB_OUTPUT
+          echo "→ HTTP Status: $HTTP"
+          cat /tmp/r1.txt
+          echo ""
 
-          # Aceptar 200 o 406 (Supabase a veces devuelve 406 con datos válidos)
-          if [[ "$HTTP" == "200" || "$HTTP" == "206" || "$HTTP" == "304" ]]; then
-            echo "✅ Supabase config OK"
-          elif [[ "$HTTP" == "000" ]]; then
-            echo "❌ Sin conexión — Supabase posiblemente pausado"
-          else
-            echo "⚠️ Respuesta HTTP $HTTP — puede estar iniciando"
-          fi
-
-      - name: 📡 Ping Supabase — tabla productos
-        id: ping_productos
+      - name: 🔍 Query real a tabla productos
         run: |
-          HTTP=$(curl -s -o /tmp/resp_prod.txt -w "%{http_code}" \
-            --max-time 30 \
-            --retry 3 \
-            --retry-delay 5 \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/productos?select=id&limit=1" \
+          HTTP=$(curl -s -o /tmp/r2.txt -w "%{http_code}" \
+            --max-time 30 --retry 3 --retry-delay 10 \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/productos?select=id,name&limit=5" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Accept: application/json" || echo "000")
+            -H "Accept: application/json" \
+            -H "Prefer: count=exact" \
+            || echo "000")
 
-          echo "HTTP Status productos: $HTTP"
-          echo "Respuesta: $(cat /tmp/resp_prod.txt)"
+          echo "→ HTTP Status productos: $HTTP"
+          cat /tmp/r2.txt
+          echo ""
 
-          if [[ "$HTTP" == "200" ]]; then
-            echo "✅ Tabla productos OK"
-          else
-            echo "⚠️ Productos status: $HTTP"
-          fi
-
-      - name: 🌐 Ping GitHub Pages
+      - name: ⚡ Ping via Edge Function (activa el motor completamente)
         run: |
-          HTTP=$(curl -s -o /dev/null -w "%{http_code}" \
+          # Llamada al health endpoint de Supabase — activa la DB a nivel motor
+          HTTP=$(curl -s -o /tmp/r3.txt -w "%{http_code}" \
             --max-time 20 \
-            "https://iamneo3000.github.io/FitnessCenterStore/" || echo "000")
+            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            || echo "000")
 
-          echo "GitHub Pages status: $HTTP"
-          if [[ "$HTTP" == "200" ]]; then
-            echo "✅ Sitio web activo"
-          else
-            echo "⚠️ Sitio respondió: $HTTP"
-          fi
+          echo "→ Health endpoint: $HTTP"
 
-      - name: 📊 Resumen final
+      - name: 📊 Resultado
         run: |
           echo ""
-          echo "================================================"
-          echo "  🏋️ FITNESS CENTER STORE — KEEP ALIVE REPORT"
-          echo "  Fecha: $(date '+%Y-%m-%d %H:%M:%S UTC')"
-          echo "  Config ping: ${{ steps.ping_config.outputs.status }}"
-          echo "  Próximo ping automático: en 3 días"
-          echo "================================================"
-          echo ""
-          echo "ℹ️  Si Supabase sigue pausado, entra a:"
-          echo "    https://supabase.com/dashboard"
-          echo "    y haz clic en 'Restore project'"
+          echo "============================================"
+          echo "  ✅ Keep-alive completado — $(date '+%Y-%m-%d')"
+          echo "  🗓  Próxima ejecución: en 2 días"
+          echo "  🔗 Supabase: xnlumxmzmcfpamjfsyec"
+          echo "============================================"
