@@ -17,52 +17,54 @@ jobs:
         run: |
           echo "🏋️ Haciendo ping a Supabase — $(date)"
 
+          # Limpiamos la URL: quitamos /rest/v1/ o / del final si existe
+          BASE_URL=$(echo "${{ secrets.SUPABASE_URL }}" | sed 's|/rest/v1.*||' | sed 's|/$||')
+          FULL_URL="${BASE_URL}/rest/v1/config?select=clave&limit=1"
+
+          echo "URL usada: $FULL_URL"
+
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/config?select=clave&limit=1" \
+            "$FULL_URL" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
 
-          echo "HTTP Status: $RESPONSE"
+          echo "HTTP Status config: $RESPONSE"
 
           if [ "$RESPONSE" = "200" ]; then
-            echo "✅ Supabase activo y respondiendo correctamente"
+            echo "✅ Supabase activo"
           else
-            echo "⚠️ Respuesta inesperada: $RESPONSE"
+            echo "⚠️ Respuesta: $RESPONSE"
           fi
 
       - name: 📡 Ping Supabase — tabla productos
         run: |
+          BASE_URL=$(echo "${{ secrets.SUPABASE_URL }}" | sed 's|/rest/v1.*||' | sed 's|/$||')
+          FULL_URL="${BASE_URL}/rest/v1/productos?select=id&limit=1"
+
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/productos?select=id&limit=1" \
+            "$FULL_URL" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
 
-          echo "Productos ping status: $RESPONSE"
+          echo "HTTP Status productos: $RESPONSE"
 
           if [ "$RESPONSE" = "200" ]; then
             echo "✅ Tabla productos accesible"
           else
-            echo "⚠️ Productos no accesible: $RESPONSE"
+            echo "⚠️ Productos: $RESPONSE"
           fi
 
-      - name: 🌐 Ping sitio GitHub Pages
+      - name: 🌐 Ping GitHub Pages
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
             "https://iamneo3000.github.io/FitnessCenterStore/")
-
-          echo "GitHub Pages status: $RESPONSE"
-
-          if [ "$RESPONSE" = "200" ]; then
-            echo "✅ Sitio web activo"
-          else
-            echo "⚠️ Sitio respondió: $RESPONSE"
-          fi
+          echo "GitHub Pages: $RESPONSE"
+          [ "$RESPONSE" = "200" ] && echo "✅ Sitio activo" || echo "⚠️ Status: $RESPONSE"
 
       - name: 📊 Resumen
         run: |
-          echo ""
           echo "================================================"
-          echo "  🏋️ FITNESS CENTER STORE — KEEP ALIVE REPORT"
+          echo "  🏋️ FITNESS CENTER STORE — KEEP ALIVE"
           echo "  Fecha: $(date '+%Y-%m-%d %H:%M:%S UTC')"
-          echo "  Próximo ping: en 2 días"
+          echo "  Frecuencia: cada 12 horas"
           echo "================================================"
